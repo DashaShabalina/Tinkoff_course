@@ -1,0 +1,960 @@
+openapi: 3.0.0
+info:
+  title: dz-api
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/tasks/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Метод для получения данных о задаче
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  number:
+                    type: string
+                    description: Номер задачи в системе
+                  project_id:
+                    type: string
+                    description: 'UUID проекта, к которому относится задача'
+                  name:
+                    type: string
+                    description: Краткое описание задачи
+                  description:
+                    type: string
+                    description: Подробное описание задачи
+                  author_id:
+                    type: string
+                    description: 'UUID пользователя, который создал задачу'
+                  priority_id:
+                    type: integer
+                    description: ID выставленного для задачи приоритета
+                  assig_user_id:
+                    type: string
+                    description: 'UUID пользователя, на которого назначена задача'
+                  resp_user_id:
+                    type: string
+                    description: 'UUID пользователя, отвечающего за выполнение задачи'
+                  start_date:
+                    type: object
+                    description: Дата создания задачи
+                    required:
+                      - datetime
+                    properties:
+                      datetime:
+                        type: string
+                      timezone:
+                        type: string
+                  end_date:
+                    type: object
+                    description: Плановая или фактическая дата завершения задачи
+                    properties:
+                      datetime:
+                        type: string
+                      timezone:
+                        type: string
+                  labor_costs:
+                    type: number
+                    description: Оценочное время на реализацию задачи в часах
+                  readiness:
+                    type: integer
+                    description: Готовность решения в процентах
+                    default: 0
+                    minimum: 0
+                    maximum: 100
+                  tracker_id:
+                    type: string
+                    description: UUID выставленного для задачи трекера
+                  source_id:
+                    type: string
+                    description: UUID выставленного для задачи источника
+                  type_id:
+                    type: string
+                    description: UUID типа задачи
+                  status_id:
+                    type: string
+                    description: UUID статуса задачи
+                  version_id:
+                    type: string
+                    description: UUID версии задачи
+                  real_time:
+                    type: number
+                    description: 'Реальное время, потраченное на выполнение задачи'
+                required:
+                  - number
+                  - project_id
+                  - name
+                  - description
+                  - author_id
+                  - priority_id
+                  - assig_user_id
+                  - start_date
+                  - readiness
+                  - tracker_id
+                  - source_id
+                  - type_id
+                  - status_id
+                  - version_id
+              examples:
+                Example 1:
+                  value:
+                    id: aecef463-0486-43c4-a0e4-51aaacb72206
+                    name: Системы преобразования координат по реперным точкам
+                    description: 'Особенностью технологического процесса для сваебойных и буровых установок назначения гражданского строительства является то, что техника не превязана к конкертной местности. Предполагается работа по геодезическим проектам и регулярная необходимость смены/изменения систем координат и колибровки на местности. Для этого необходимо реализвовать в ПО поддержку новой системы преобразования системы координат с RST параметром.'
+                    gitlab: .../issues/3602
+                    status: Высокий
+                    start_date:
+                      datetime: '2023-01-25T00:00:00'
+                      timezone: Europe/Berlin
+                    end_date: null
+                    readiness: 80
+                    source: Заказчик
+                    assigned_user_id: aecef463-0486-43c4-a0e4-51aaacb72206
+                    responsible_user_id: aecef463-0486-43c4-a0e4-51aaacb72206
+                    version: 2.20.0 спринт 1
+                    time: 10.2
+        '404':
+          description: Not Found
+      operationId: get-tasks-id
+      description: ''
+    patch:
+      summary: Метод для изменения параметров задачи
+      operationId: patch-tasks-id
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Краткое описание задачи
+                description:
+                  type: string
+                  description: Подробное описание задачи
+                priority_id:
+                  type: integer
+                  description: ID выставленного для задачи приоритета
+                assig_user_id:
+                  type: string
+                  description: 'UUID пользователя, на которого назначена задача'
+                resp_user_id:
+                  type: string
+                  description: 'UUID пользователя, отвечающего за выполнение задачи'
+                end_date:
+                  type: object
+                  description: Плановая или фактическая дата завершения задачи
+                  properties:
+                    datetime:
+                      type: string
+                    timezone:
+                      type: string
+                labor_costs:
+                  type: number
+                  description: Оценочное время на реализацию задачи в часах
+                readiness:
+                  type: integer
+                  description: Готовность решения в процентах
+                  minimum: 0
+                  maximum: 100
+                tracker_id:
+                  type: string
+                  description: UUID выставленного для задачи трекера
+                source_id:
+                  type: string
+                  description: UUID выставленного для задачи источника
+                type_id:
+                  type: string
+                  description: UUID типа задачи
+                status_id:
+                  type: string
+                  description: UUID статуса задачи
+                version_id:
+                  type: string
+                  description: UUID версии задачи
+                real_time:
+                  type: number
+                  description: 'Реальное время, потраченное на выполнение задачи'
+            examples:
+              Example 1:
+                value:
+                  name: Системы преобразования координат по реперным точкам
+                  description: 'Особенностью технологического процесса для сваебойных и буровых установок назначения гражданского строительства является то, что техника не превязана к конкертной местности. Предполагается работа по геодезическим проектам и регулярная необходимость смены/изменения систем координат и колибровки на местности. Для этого необходимо реализвовать в ПО поддержку новой системы преобразования системы координат с RST параметром.'
+                  priority_id: 1
+                  assig_user_id: 12a3eea4-2858-47fb-9712-cb8a2b564923
+                  resp_user_id: 12a3eea4-2858-47fb-9712-cb8a2b564923
+                  end_date:
+                    datetime: '2023-10-25T00:00:00'
+                    timezone: Europe/Berlin
+                  labor_costs: 16.5
+                  readiness: 80
+                  tracker_id: 17a3eea4-2858-47fb-9712-cb8a2b564923
+                  source_id: aecef463-0486-43c4-a0e4-51aaacb72206
+                  type_id: aecef463-0486-43c4-a0e4-51aaacb72206
+                  status_id: 14a3eea4-2858-47fb-9712-cb8a2b564923
+                  version_id: 15a3eea4-2858-47fb-9712-cb8a2b564923
+                  real_time: 10.5
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+        description: ''
+  /task:
+    post:
+      summary: Метод для создания задачи
+      operationId: post-task
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: UUIDсозданной задачи
+                  number:
+                    type: string
+                    description: Номер задачи в системе
+                required:
+                  - id
+                  - number
+              examples:
+                Example 1:
+                  value:
+                    id: 17a3eea4-2858-47fb-9712-cb8a2b564923
+                    number: '4048'
+        '400':
+          description: Bad Request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Краткое описание задачи
+                project_id:
+                  type: string
+                  description: 'UUID проекта, к которому относится задача'
+                description:
+                  type: string
+                  description: Подробное описание задачи
+                author_id:
+                  type: string
+                  description: Автор задачи
+                priority_id:
+                  type: integer
+                  description: Идентификатор приоритета
+                assig_user_id:
+                  type: string
+                  description: 'UUID пользователя, на которого назначена задача'
+                resp_user_id:
+                  type: string
+                  description: 'UUID пользователя, отвечающего за выполнение задачи'
+                start_date:
+                  type: object
+                  description: Дата создания задачи
+                  required:
+                    - datetime
+                  properties:
+                    datetime:
+                      type: string
+                    timezone:
+                      type: string
+                end_date:
+                  type: object
+                  description: Плановая или фактическая дата завершения задачи
+                  properties:
+                    datetime:
+                      type: string
+                    timezone:
+                      type: string
+                labor_costs:
+                  type: number
+                  description: Оценочное время на реализацию задачи в часах
+                readiness:
+                  type: integer
+                  description: Готовность решения в процентах
+                  minimum: 0
+                  maximum: 100
+                  default: 0
+                tracker_id:
+                  type: string
+                  description: UUID трекера задачи
+                source_id:
+                  type: string
+                  description: UUID источника задачи
+                type_id:
+                  type: string
+                  description: UUID типа задачи
+                status_id:
+                  type: string
+                  description: UUID статуса задачи
+                version_id:
+                  type: string
+                  description: UUID версии задачи
+                real_time:
+                  type: integer
+                  description: 'Реальное время, потраченное на выполнение задачи'
+              required:
+                - name
+                - project_id
+                - description
+                - author_id
+                - priority_id
+                - assig_user_id
+                - start_date
+                - tracker_id
+                - source_id
+                - type_id
+                - status_id
+                - version_id
+            examples:
+              Example 1:
+                value:
+                  name: Системы преобразования координат по реперным точкам
+                  project_id: 58a3eea4-2858-47fb-9712-cb8a2b564923
+                  description: 'Особенностью технологического процесса для сваебойных и буровых установок назначения гражданского строительства является то, что техника не превязана к конкертной местности. Предполагается работа по геодезическим проектам и регулярная необходимость смены/изменения систем координат и колибровки на местности. Для этого необходимо реализвовать в ПО поддержку новой системы преобразования системы координат с RST параметром.'
+                  author_id: 12a3eea4-2858-47fb-9712-cb8a2b564923
+                  priority_id: 1
+                  assig_user_id: 12a3eea4-2858-47fb-9712-cb8a2b564923
+                  resp_user_id: 12a3eea4-2858-47fb-9712-cb8a2b564923
+                  start_date:
+                    datetime: '2023-08-25T00:00:00'
+                    timezone: Europe/Berlin
+                  end_date:
+                    datetime: '2023-10-25T00:00:00'
+                    timezone: Europe/Berlin
+                  labor_costs: 16.5
+                  readiness: 80
+                  tracker_id: 17a3eea4-2858-47fb-9712-cb8a2b564923
+                  source_id: aecef463-0486-43c4-a0e4-51aaacb72206
+                  type_id: aecef463-0486-43c4-a0e4-51aaacb72206
+                  status_id: 14a3eea4-2858-47fb-9712-cb8a2b564923
+                  version_id: 15a3eea4-2858-47fb-9712-cb8a2b564923
+                  real_time: 0
+        description: ''
+  /tasks:
+    get:
+      summary: Метод для получения задач
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tasks:
+                    type: array
+                    description: Массив задач
+                    items:
+                      type: object
+                      properties:
+                        project_name:
+                          type: string
+                          description: Название проекта
+                        number:
+                          type: string
+                          description: Номер задачи
+                        name:
+                          type: string
+                          description: Название задачи
+                        priority:
+                          type: string
+                          description: Приоритет
+                        readiness:
+                          type: integer
+                          description: Готовность задачи в процентах
+                      required:
+                        - project_name
+                        - number
+                        - name
+                        - priority
+                        - readiness
+                required:
+                  - tasks
+              examples:
+                Example 1:
+                  value:
+                    tasks:
+                      - project_name: MARS
+                        number: '4041'
+                        name: Исправить скрипт перевода ВВ
+                        priority: Высокий
+                        readiness: 80
+                      - project_name: MARS
+                        number: '4041'
+                        name: Обновление свайного поля
+                        priority: Низкий
+                        readiness: 20
+        '404':
+          description: Not Found
+          content: {}
+      operationId: get-tasks
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: user_id
+          description: Идентификатор пользователя
+        - schema:
+            type: integer
+            default: 30
+          in: query
+          name: limit
+          description: количество записей на странице
+        - schema:
+            type: integer
+          in: query
+          name: offset
+          description: идентификатор последнего полученного объекта
+    parameters: []
+  '/tasks/{id}/comments':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: UUID задачи
+    get:
+      summary: Метод для получения комментариев к задаче
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comments:
+                    type: array
+                    description: Массив комментариев к задаче
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: UUID комментария
+                        user_id:
+                          type: string
+                          description: 'UUID пользователя, оставившего комментарий'
+                        comment:
+                          type: string
+                          description: Текст комментария
+                        create_date:
+                          type: object
+                          description: Дата создания комментария
+                          required:
+                            - datetime
+                          properties:
+                            datetime:
+                              type: string
+                            timezone:
+                              type: string
+                        update_date:
+                          type: object
+                          description: Дата обновления комментария
+                          properties:
+                            datetime:
+                              type: string
+                            timezone:
+                              type: string
+                      required:
+                        - id
+                        - user_id
+                        - comment
+                        - create_date
+                required:
+                  - comments
+              examples:
+                Example 1:
+                  value:
+                    comments:
+                      - id: 87a3eea4-2858-47fb-9712-cb8a2b564923
+                        user_id: 77a3eea4-2858-47fb-9712-cb8a2b564923
+                        comment: Прошу проверить кейс повторно
+                        create_date:
+                          datetime: '2023-10-25T00:00:00'
+                          timezone: Europe/Berlin
+                        update_date:
+                          datetime: '2023-11-25T00:00:00'
+                          timezone: Europe/Berlin
+                      - id: 97a3eea4-2858-47fb-9712-cb8a2b564923
+                        user_id: 97a3eea4-2858-47fb-9712-cb8a2b564923
+                        comment: Баг воспроизводится
+                        create_date:
+                          datetime: '2023-12-25T00:00:00'
+                          timezone: Europe/Berlin
+                        update_date:
+                          datetime: '2023-13-25T00:00:00'
+                          timezone: Europe/Berlin
+        '404':
+          description: Not Found
+      operationId: get-tasks-id-comments
+      parameters:
+        - schema:
+            type: integer
+            default: 20
+          in: query
+          name: limit
+          description: количество записей на странице
+        - schema:
+            type: integer
+          in: query
+          name: offset
+          description: идентификатор последнего полученного объекта
+  '/tasks/{task_id}/comments/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: UUID комментария
+      - schema:
+          type: string
+        name: task_id
+        in: path
+        required: true
+        description: UUID задачи
+    patch:
+      summary: Метод для обновления комментария
+      operationId: patch-tasks-id-comments-id
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                  description: Текст комментария
+                update_date:
+                  type: object
+                  required:
+                    - datetime
+                  description: Дата обновления комментария
+                  properties:
+                    datetime:
+                      type: string
+                    timezone:
+                      type: string
+              required:
+                - comment
+                - update_date
+            examples:
+              Example 1:
+                value:
+                  comment: Прошу проверить кейс повторно? баг не воспроизводится
+                  update_date:
+                    datetime: '2023-10-25T00:00:00'
+                    timezone: Europe/Berlin
+    delete:
+      summary: Метод для удаления комментария
+      operationId: delete-tasks-id-comments-id
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+  '/tasks/{id}/comment':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: 'UUID задачи, к которой создается комментарий'
+    post:
+      summary: Метод для создания комментария
+      operationId: post-tasks-id-comment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: UUID созданного комментария
+                required:
+                  - id
+              examples:
+                Example 1:
+                  value:
+                    id: 87a3eea4-2858-47fb-9712-cb8a2b564923
+        '404':
+          description: Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  description: 'UUID пользователя, оставившего комментарий'
+                comment:
+                  type: string
+                  description: Текст комментария
+                create_date:
+                  type: object
+                  required:
+                    - datetime
+                  description: Дата создания комментария
+                  properties:
+                    datetime:
+                      type: string
+                    timezone:
+                      type: string
+              required:
+                - user_id
+                - comment
+                - create_date
+            examples:
+              Example 1:
+                value:
+                  user_id: 77a3eea4-2858-47fb-9712-cb8a2b564923
+                  comment: Прошу проверить кейс повторно
+                  create_date:
+                    datetime: '2023-10-25T00:00:00'
+                    timezone: Europe/Berlin
+components:
+  schemas:
+    User:
+      type: object
+      description: Модель пользователя системы
+      properties:
+        id:
+          type: string
+          description: UUID пользователя
+        first_name:
+          type: string
+          description: Имя пользователя
+        last_name:
+          type: string
+          description: Фамилия пользователя
+        Status:
+          type: boolean
+          description: Показатель работает ли пользователь в компании или уволен
+        registration_dt:
+          type: object
+          description: Дата регистрации пользователя в системе
+          properties:
+            datetime:
+              type: string
+            timezone:
+              type: string
+        last_activity_dt:
+          type: object
+          description: Дата последнего подключения пользователя к системе
+          properties:
+            datetime:
+              type: string
+            timezone:
+              type: string
+        department_id:
+          type: string
+          description: 'UUID отдела, в котором работает пользователь'
+      required:
+        - id
+        - first_name
+        - last_name
+        - Status
+        - department_id
+    Project:
+      type: object
+      description: Модель проекта
+      properties:
+        id:
+          type: string
+          description: UUID проекта
+        project:
+          type: string
+          description: Название проекта
+        description:
+          type: string
+          description: Подробное описание проекта
+        start_date:
+          type: object
+          description: Плановая или фактическая дата начала проекта
+          properties:
+            datetime:
+              type: string
+            timezone:
+              type: string
+        end_date:
+          type: object
+          description: Плановая или фактическая дата завершения проекта
+          properties:
+            datetime:
+              type: string
+            timezone:
+              type: string
+      required:
+        - id
+        - project
+    Task:
+      type: object
+      description: Модель задачи
+      properties:
+        id:
+          type: string
+          description: UUID задачи
+        number:
+          type: string
+          description: Номер задачи в системе
+        name:
+          type: string
+          description: Название - краткое описание задачи
+        project_id:
+          type: string
+          description: 'UUID проекта, к которому относится задача'
+        description:
+          type: string
+          description: Подробное описание задачи
+        author_id:
+          type: string
+          description: Автор задачи
+        priority_id:
+          type: integer
+          description: Идентификатор приоритета
+        assig_user_id:
+          type: string
+          description: 'UUID пользователя, на которого назначена задача'
+        resp_user_id:
+          type: string
+          description: 'UUID пользователя, отвечающего за выполнение задачи'
+        start_date:
+          type: object
+          required:
+            - datetime
+          description: Дата создания задачи
+          properties:
+            datetime:
+              type: string
+            timezone:
+              type: string
+        end_date:
+          type: object
+          description: Плановая или фактическая дата завершения задачи
+          properties:
+            datetime:
+              type: string
+            timezone:
+              type: string
+        labor_costs:
+          type: number
+          description: Оценочное время на реализацию задачи в часах
+        readiness:
+          type: integer
+          description: Готовность решения в процентах
+          minimum: 0
+          maximum: 100
+        tracker_id:
+          type: string
+          description: UUID трекера задачи
+        source_id:
+          type: string
+          description: UUID источника задачи
+        type_id:
+          type: string
+          description: UUID типа задачи
+        status_id:
+          type: string
+          description: UUID статуса задачи
+        version_id:
+          type: string
+          description: UUID версии задачи
+        real_time:
+          type: integer
+          description: 'Реальное время, потраченное на выполнение задачи'
+      required:
+        - id
+        - number
+        - name
+        - project_id
+        - description
+        - author_id
+        - priority_id
+        - assig_user_id
+        - start_date
+        - tracker_id
+        - source_id
+        - type_id
+        - status_id
+        - version_id
+    Comment:
+      type: object
+      description: Модель комментария к задаче
+      properties:
+        id:
+          type: string
+          description: UUID комментария
+        user_id:
+          type: string
+          description: 'UUID пользователя, оставившего комментарий'
+        comment:
+          type: string
+          description: Текст комментария
+        create_date:
+          type: object
+          description: Дата создания комментария
+          properties:
+            datetime:
+              type: string
+            timezone:
+              type: string
+        update_date:
+          type: object
+          description: Дата обновления комментария
+          properties:
+            datetime:
+              type: string
+            timezone:
+              type: string
+        task_id:
+          type: string
+          description: 'UUID задачи, к которой написан комментарий'
+      required:
+        - id
+        - user_id
+        - comment
+        - create_date
+        - task_id
+    Version:
+      type: object
+      description: Модель версии(спринта)
+      properties:
+        id:
+          type: string
+          description: UUID версии
+        version:
+          type: string
+          description: Название версии
+        project_id:
+          type: string
+          description: UUID проекта
+      required:
+        - id
+        - version
+        - project_id
+    Status:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID статуса
+        status:
+          type: string
+          description: Название статуса
+        project_id:
+          type: string
+          description: UUID проекта
+      required:
+        - id
+        - status
+        - project_id
+      description: Модель статуса задач
+    Source:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID источника
+        source:
+          type: string
+          description: Название источника
+        project_id:
+          type: string
+          description: UUID проекта
+      required:
+        - id
+        - source
+        - project_id
+      description: Модель источника задач
+      title: ''
+    Type:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID типа задачи
+        type:
+          type: string
+          description: Название типа
+        project_id:
+          type: string
+          description: UUID проекта
+      required:
+        - id
+        - type
+        - project_id
+      description: Модель типа задач
+      title: ''
+    Tracker:
+      type: object
+      description: Модель трекера задач
+      properties:
+        id:
+          type: string
+          description: UUID трекера
+        tracker:
+          type: string
+          description: Название трекера
+        project_id:
+          type: string
+          description: UUID проекта
+      required:
+        - id
+        - tracker
+        - project_id
+    Department:
+      type: object
+      description: Модель отделов компании
+      properties:
+        id:
+          type: string
+          description: UUID отдела
+        department:
+          type: string
+          description: Название отдела
+        description:
+          type: string
+          description: Краткое описание функций отдела
+      required:
+        - id
+        - department
